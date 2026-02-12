@@ -27,11 +27,20 @@ RandomZoomOut = register(T.RandomZoomOut)
 RandomHorizontalFlip = register(T.RandomHorizontalFlip)
 Resize = register(T.Resize)
 ToImage = register(T.ToImage)
-ToDtype = register(T.ToDtype)
+# ToDtype = register(T.ToDtype)
 SanitizeBoundingBoxes = register(T.SanitizeBoundingBoxes)
 RandomCrop = register(T.RandomCrop)
 Normalize = register(T.Normalize)
 
+
+@register
+class ToDtype(T.Transform):
+    def __init__(self, dtype=torch.float32, scale: bool = True) -> None:
+        super().__init__()
+        self._inner = T.ToDtype(dtype=dtype, scale=scale)
+
+    def forward(self, *inputs):
+        return self._inner(*inputs)
 
 
 @register
